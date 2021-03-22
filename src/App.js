@@ -9,8 +9,6 @@ function App() {
 
   var appStyle = {
     backgroundColor: "#617691",
-    height: "100vh",
-    width: "100vw"
   }
 
   const [axTest, setAxTest] = useState();
