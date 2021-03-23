@@ -1,18 +1,15 @@
 import React, {useState} from 'react';
 import "./css/question.css";
+import { useDispatch} from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 export default function Question(props){
 
     const [selected, setSelected] = useState("Choose");
+    const [questionStyle, setQuestionStyle] = useState('question');
+    const [answerClass, setAnswerClass] = useState('answer')
 
-    var questionStyle = 'question';
-    if(props.answer.answerString === selected && props.showAnswer === true){
-        questionStyle += ' correct';
-        props.onCorrectCount(true, props.qnumber);
-    }else if(props.answer !== selected && props.showAnswer === true){
-        questionStyle += ' wrong';
-        props.onCorrectCount(false, props.qnumber);
-    }
+    const dispatch = useDispatch();
 
     var questionCSS = {
         height: "300px"
@@ -28,11 +25,13 @@ export default function Question(props){
     ) : [];
     answerChoicesItems.unshift(<option key="" value="" >Choose</option>);
 
-    var answerClass = '';
-    if(props.showAnswer === true){
-        answerClass += 'showAnswer';
-    }else{
-        answerClass += 'answer'
+    if(props.showAnswer === true &&  answerClass !== 'showAnswer'){
+        setAnswerClass('showAnswer');
+        var tmpqs = questionStyle.split(' ');
+        if (!tmpqs.includes('showAnswer')){
+            tmpqs.push('showAnswer');
+        }
+        setQuestionStyle(tmpqs.join(' '));
     }
 
     var answerImg = (props.answer !== undefined) ? 
@@ -41,7 +40,30 @@ export default function Question(props){
 
     function handleChange(e){
         setSelected(e.target.value);
+        var qnum = props.qnumber;
+        var cor = false;
+        var tmpqs = questionStyle.split(' ');
+        if(props.answer.answerString === e.target.value){
+            tmpqs.push('correct')
+            if (tmpqs.includes('wrong')){
+                tmpqs = tmpqs.filter(e => e !== 'wrong')
+            }
+            cor = true;
+        }else{
+            tmpqs.push('wrong');
+            if (tmpqs.includes('correct')){
+                tmpqs = tmpqs.filter(e => e !== 'correct');
+            }
+            cor = false;
+        }
+        var qs = tmpqs.join(' ')
+        setQuestionStyle(qs);
+        dispatch({type:"SET_CORRECT", payload: {cor: cor, qnum:qnum}});
+        // const counter = useSelector(state => state.todos);
+        // console.log(counter.correctArray);
     }
+
+
     
     return <div className={questionStyle} style={questionCSS}>
         <div>Question {props.qnumber}</div>

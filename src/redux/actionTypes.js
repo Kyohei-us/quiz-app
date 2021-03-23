@@ -1,0 +1,2 @@
+export const COUNT_CORRECT = "COUNT_CORRECT";
+export const SET_CORRECT = "SET_CORRECT";

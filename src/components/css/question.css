@@ -1,26 +1,21 @@
-.showAnswer
-{
-    display:inline-block;
+.showAnswer {
+  display: inline-block;
 }
-.answer
-{
-    display:none;
+.answer {
+  display: none;
 }
 
-.question
-{
-    display: block;
-    border: solid;
-    border-radius: 8px;
-    display: inline-block;
-    margin: 20px;
-    padding: 10px;  
+.question {
+  display: block;
+  border: solid;
+  border-radius: 8px;
+  display: inline-block;
+  margin: 20px;
+  padding: 10px;
 }
-.correct
-{
-    background-color: #ff3333;
+.correct.showAnswer {
+  background-color: #ff3333;
 }
-.wrong
-{
-    background-color: #00dddd;
+.wrong.showAnswer {
+  background-color: #00dddd;
 }

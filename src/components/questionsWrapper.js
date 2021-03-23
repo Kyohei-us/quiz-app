@@ -1,40 +1,21 @@
 import React, {useState} from 'react';
 import Question from './question';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 export default function QuestionsWrapper(props){
 
     const [showAnswer, setShowAnswer] = useState(false);
 
-    // var questionParsed = JSON.parse(props.questions);
-
-    const handleCorrectCount = (correctAnswer, qnumber) => {
-        var tmp = correctsCount;
-        if(correctAnswer === true){
-            tmp[qnumber-1] = true;
-            setCorrectsCount(tmp); 
-        }else{
-            tmp[qnumber-1] = false;
-            setCorrectsCount(tmp); 
-        }
-        const count = correctsCount.filter(Boolean).length;
-        setCorrectNumber(count);
-    }
-
     var questionItems = (props.questions !== undefined) ? 
         props.questions.map((question) => 
         <Question key={question.QuestionNumber} qnumber={question.QuestionNumber} qquestion={question.question}
-            answerChoices={question.answerChoices} answer={question.answer} showAnswer={showAnswer} onCorrectCount={handleCorrectCount}></Question>
+            answerChoices={question.answerChoices} answer={question.answer} showAnswer={showAnswer} ></Question>
     ): <p>Questions are loading, or no question is available</p>;
-    
-    var arrlen = (props.questions !== undefined) ? props.questions.length:0;
-    const [correctsCount, setCorrectsCount] = useState(Array(arrlen));
-    const [correctNumber, setCorrectNumber] = useState(0)
-
-
-    
+        
 
     function showAnswers() {
-        console.log("Show answers.")
+        console.log("Showing answers.")
         setShowAnswer(true);
     }
 
@@ -42,9 +23,13 @@ export default function QuestionsWrapper(props){
         margin: "0px"
     }
 
+    const dispatch = useDispatch();
+
+    const counter = useSelector(state => state.todos);
+
     return <div>
-        <p style={questionsStyle}>Number of correct answers is: {correctNumber}</p>
+        <p style={questionsStyle}>{counter.correctCount}</p>
         <ul id="questions" style={questionsStyle}>{questionItems}</ul>
-        <button onClick={()=>{showAnswers();}}>Submit</button>
+        <button onClick={()=>{showAnswers();dispatch({type:"COUNT_CORRECT"})}}>Submit</button>
     </div>;
 }

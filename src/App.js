@@ -2,6 +2,8 @@ import './App.css';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
 import QuestionsWrapper from './components/questionsWrapper';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 function App() {
 
@@ -26,12 +28,9 @@ function App() {
 
   return (
     <div style={appStyle} className="App">
-      <div>
+      <Provider store={store}>
         <QuestionsWrapper questions={axTest}></QuestionsWrapper>
-      </div>
-      {/* <div>
-        {axTest}
-      </div> */}
+      </Provider>
     </div>
   );
 }
